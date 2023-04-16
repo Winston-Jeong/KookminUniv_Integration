@@ -1,4 +1,4 @@
-# KookminUniv_Integration
+# project_01 part1
 num_vectors = 3;
 vectors = zeros(num_vectors, 3);
 
