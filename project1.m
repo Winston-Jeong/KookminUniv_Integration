@@ -1,11 +1,16 @@
-%%2. 유클리디안 거리, 코사인 유사도
+%%3. 유클리디안 거리 출력, 코사인 유사도 출력
+if samevec == cosb
+    Max_v1 = vectors(2, :);
+    Max_v2 = vectors(3, :);
+elseif samevec == cosa
+    Max_v1 = vectors(1, :);
+    Max_v2 = vectors(2, :);
+else
+    Max_v1 = vectors(1, :);
+    Max_v2 = vectors(3, :);
+end
 
-%유클리디안 거리
-dista = norm(vectors(1, :)-vectors(2, :));
-distb = norm(vectors(2, :)-vectors(3, :));
-distc = norm(vectors(3, :)-vectors(1, :));
-
-%코사인유사도
-cosa = cosineSimilarity(vectors(1, :), vectors(2, :));
-cosb = cosineSimilarity(vectors(2, :), vectors(3, :));
-cosc = cosineSimilarity(vectors(3, :), vectors(1, :));
+near_v1
+near_v2
+Max_v1
+Max_v2
