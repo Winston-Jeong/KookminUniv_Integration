@@ -1,12 +1,11 @@
 # 대한전기학회 2023 미니드론 자율비행 경진대회
 대한전기학회 2023 미니드론 자율비행 경진대회  
 팀 국민대통합 기술워크샵
-***
-## 대회 진행 전략
-    
 <p align="center"><img src="https://github.com/hyobbbin/mini-drone/assets/130888836/5d878661-3218-482e-afa4-b8571cfb8658" width="44%" height="33%"></img>
 <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/c743c7d5-0df9-4427-82e2-19fa905e5cb1" width="44%" height="33%"></img></p>             
 
+***
+## 대회 진행 전략
 * 맵 상세 규격
   * 고정 사항
     * 드론 이륙 지점과 1단계 링 사이 거리 : 1m
@@ -14,23 +13,24 @@
     * 1, 2, 3단계 링과 표식 사이 거리 : 2m
     * 4단계 링과 표식 사이 거리 : 1m
     * 드론 착륙 지점과 4단계 링 사이 거리 : 1m
-   
+  
   * 변동 사항
     * 링의 높이(바닥과 천 사이 간격) : 50 ~ 150cm 이내
     * 링의 좌우 : -2 ~ 2m 이내
     * 링의 각도 : 30 ~ 60° 이내
 
-* 링 중점 찾기
-  * 파란색 RGB 설정
-  * center_point 설정
-  * regionprops 함수로 파란색 사각형[^1] 중심 좌표 계산
-  * center_point와 파란색 사각형 중심 좌표 상하좌우 차이를 이용하여 드론 위치 조절
-  * 오차 범위 내에 드론 위치하면 중점으로 인식    
+ * 링 중점 찾기
+    * 파란색 RGB 설정
+    * center_point 설정
+    * regionprops 함수로 파란색 사각형[^1] 중심 좌표 계산
+    * center_point와 파란색 사각형 중심 좌표 상하좌우 차이를 이용하여 드론 위치 조절
+    * 오차 범위 내에 드론 위치하면 중점으로 인식    
 <p align="center">
     <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/fdf71b0b-75ff-4d86-8d66-1106031f79fc" width="44%" height="33%">
 </p>                      
 
 * 링 통과하기
+
   * 파란색 HSV 설정
   * 원 검출 후 regionprops 함수로 장축 길이 측정
   * 장축 길이에 따른 드론과 링 사이 거리 값 추출
@@ -92,10 +92,10 @@ end
 ```MATLAB
 dis = centroid - center_point;  % 사각형 중점과 center_point 차이
 
- % case 1
-    if(abs(dis(1))<=35 && abs(dis(2))<=35)    % x 좌표 차이, y 좌표 차이가 35보다 작을 경우 center point 인식
-        disp("Find Center Point!"); 
-        count = 1;
+% case 1
+if(abs(dis(1))<=35 && abs(dis(2))<=35)    % x 좌표 차이, y 좌표 차이가 35보다 작을 경우 center point 인식
+    disp("Find Center Point!"); 
+    count = 1;
    
 % case 2
 elseif(dis(2)<=0 && abs(dis(2))<=35 && abs(dis(1))>35)
@@ -167,8 +167,12 @@ elseif(dis(2)>0 && abs(dis(2))>35)
 end
 ```
 + 회귀 분석을 통해 장축 길이에 따른 드론 이동 거리 관계식 도출
-1. 1단계
+<p align="center">
+    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/95f4c9e6-4261-4713-9b29-195fbd1b8dfd" width="44%" height="33%">
+</p>       
+
 ```MATLAB
+% 1단계
 if sum(bw,'all') <= 10000
     moveforward(drone, 'Distance', 2, 'Speed', 1);
     
@@ -181,8 +185,8 @@ else
     distance
 end
 ```
-2. 2단계
 ```MATLAB
+% 2단계
 if sum(bw,'all') <= 10000
     moveforward(drone, 'Distance', 2.2, 'Speed', 1);
     
@@ -196,8 +200,12 @@ else
     distance
 end
 ```
-3. 3단계
+<p align="center">
+    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/eed6053b-2a7b-4aa7-9baf-0803c68da5bb" width="44%" height="33%">
+</p>           
+
 ```MATLAB
+% 3단계
 if sum(bw,'all') <= 10000
     moveforward(drone, 'Distance', 1.7, 'Speed', 1);
     
@@ -211,8 +219,12 @@ else
     distance
 end
 ```
-4. 4단계
+<p align="center">
+    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/a63a1c1b-0c00-4358-b6b1-9bc30630e988" width="44%" height="33%">
+</p>           
+
 ```MATLAB
+% 4단계
 if sum(bw,'all') <= 10000
     moveforward(drone, 'Distance', 0.2, 'Speed', 1);
     
@@ -227,25 +239,25 @@ else
 end
 ```
 **링 통과 후 드론 제어**
-1. 1단계
 ```MATLAB
+% 1단계
 turn(drone, deg2rad(90));   % 1단계 통과 후 90도 회전
 moveback(drone,'Distance',1,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동   
 count = 0;
 ```
-2. 2단계
 ```MATLAB
+% 2단계
 turn(drone, deg2rad(90));   % 2단계 통과 후 90도 회전
 moveback(drone,'Distance',1,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동
 count = 0;
 ```
-3. 3단계
 ```MATLAB
+% 3단계
 turn(drone, deg2rad(30));   % 3단계 통과 후 30도 회전
 count=0;
 ```
-4. 4단계
 ```MATLAB
+% 4단계
 land(drone);
 ```
 **4단계 각도 조절**
