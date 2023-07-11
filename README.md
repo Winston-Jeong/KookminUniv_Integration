@@ -26,6 +26,9 @@
   * regionprops 함수로 파란색 사각형[^1] 중심 좌표 계산
   * center_point와 파란색 사각형 중심 좌표 상하좌우 차이를 이용하여 드론 위치 조절
   * 오차 범위 내에 드론 위치하면 중점으로 인식    
+<p align="center">
+    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/fdf71b0b-75ff-4d86-8d66-1106031f79fc" width="44%" height="33%">
+</p>                      
 
 * 링 통과하기
   * 파란색 HSV 설정
@@ -33,6 +36,9 @@
   * 장축 길이에 따른 드론과 링 사이 거리 값 추출
   * 추출한 값들로 회귀 분석을 통해 드론 이동 거리 식 도출
   * 드론 이동시켜 링 통과
+<p align="center">
+    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/69d8e5fd-f616-4c59-b1eb-1a98642025b9" width="44%" height="33%">
+</p>                   
 
 * 링 통과 후 드론 제어
   * 드론이 링을 통과하면 바로 단계에 맞게 명령 코드를 입력하여 제어[^2]
