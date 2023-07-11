@@ -37,7 +37,7 @@
   * 추출한 값들로 회귀 분석을 통해 드론 이동 거리 식 도출
   * 드론 이동시켜 링 통과
 <p align="center">
-    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/69d8e5fd-f616-4c59-b1eb-1a98642025b9" width="44%" height="33%">
+    <img src="image/파란색 원.png" width="44%" height="33%">
 </p>                   
 
 * 링 통과 후 드론 제어
