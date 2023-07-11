@@ -201,7 +201,7 @@ else
 end
 ```
 <p align="center">
-    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/eed6053b-2a7b-4aa7-9baf-0803c68da5bb" width="44%" height="33%">
+    <img src="image/회귀분석3.png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
