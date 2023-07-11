@@ -3,6 +3,10 @@
 팀 국민대통합 기술워크샵
 ***
 ## 대회 진행 전략
+    
+<p align="center"><img src="https://github.com/hyobbbin/mini-drone/assets/130888836/5d878661-3218-482e-afa4-b8571cfb8658" width="44%" height="33%"></img>
+<img src="https://github.com/hyobbbin/mini-drone/assets/130888836/c743c7d5-0df9-4427-82e2-19fa905e5cb1" width="44%" height="33%"></img></p>             
+
 * 맵 상세 규격
   * 고정 사항
     * 드론 이륙 지점과 1단계 링 사이 거리 : 1m
@@ -39,9 +43,7 @@
 * 4단계 각도 조절
   * 각도 변동 범위가 30 ~ 60° 이내이므로 30°부터 5°씩 회전시키며 최적의 각도[^3] 탐색
 ***
-## 알고리즘
-***
-## 소스 코드
+## 알고리즘 및 소스 코드
 **변수 선언**
 ```MATLAB
 count = 0;                              % 전진 여부 확인 변수
@@ -84,22 +86,20 @@ end
 ```MATLAB
 dis = centroid - center_point;  % 사각형 중점과 center_point 차이
 
-% case 1
-if(abs(dis(1))<=35 && abs(dis(2))<=35)    % x 좌표 차이, y 좌표 차이가 35보다 작을 경우 center point 인식
-    disp("Find Center Point!"); 
-    count = 1;
-
+ % case 1
+    if(abs(dis(1))<=35 && abs(dis(2))<=35)    % x 좌표 차이, y 좌표 차이가 35보다 작을 경우 center point 인식
+        disp("Find Center Point!"); 
+        count = 1;
+   
 % case 2
 elseif(dis(2)<=0 && abs(dis(2))<=35 && abs(dis(1))>35)
     if(dis(1)<=0)
         disp("Move left");
         moveleft(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     
     elseif(dis(1)>0)
         disp("Move right");
         moveright(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     end    
 
 % case 3
@@ -109,24 +109,20 @@ elseif(dis(2)<=0 && abs(dis(2))>35)
         moveleft(drone,'Distance',0.2,'Speed',1);
         disp("Move up");
         moveup(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     
     elseif(dis(1)>0 && abs(dis(1))>35)
         disp("Move right");
         moveright(drone,'Distance',0.2,'Speed',1);
         disp("Move up");
         moveup(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
    
     elseif(dis(1)<=0 && abs(dis(1))<=35)
         disp("Move up");
         moveup(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
 
     elseif(dis(1)>0 && abs(dis(1))<=35)
         disp("Move up");
         moveup(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     end
 
 % case 4
@@ -134,12 +130,10 @@ elseif(dis(2)>0 && abs(dis(2))<=35 && abs(dis(1))>35)
     if(dis(1)<=0)
         disp("Move left");
         moveleft(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     
     elseif(dis(1)>0)
         disp("Move right");
         moveright(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     end    
 
 % case 5
@@ -149,54 +143,24 @@ elseif(dis(2)>0 && abs(dis(2))>35)
         moveleft(drone,'Distance',0.2,'Speed',1);
         disp("Move down");
         movedown(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     
     elseif(dis(1)>0 && abs(dis(1))>35)
         disp("Move right");
         moveright(drone,'Distance',0.2,'Speed',1);
         disp("Move down");
         movedown(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     
     elseif(dis(1)<=0 && abs(dis(1))<=35)
         disp("Move down");
         movedown(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
 
     elseif(dis(1)>0 && abs(dis(1))<=35)
         disp("Move down");
         movedown(drone,'Distance',0.2,'Speed',1);
-        pause(0.5);
     end
 end
 ```
-**링 통과하기**
-+ 파란색 HSV 설정
-```MATLAB
-hsv = rgb2hsv(frame);
-h = hsv(:,:,1);
-s = hsv(:,:,2);
-v = hsv(:,:,3);
-blue = (0.535<h)&(h<0.69)&(0.4<s)&(v>0.1)&(v<0.97);
-
-blue(1,:) = 1;
-blue(720,:) = 1;
-bw = imfill(blue,'holes');
-for x=1:720
-    for y=1:size(blue,2)
-        if blue(x,y)==bw(x,y)
-            bw(x,y)=0;
-        end
-    end
-end
-```
-+ 원 검출 후 장축 길이 계산
-```MATLAB
-% 속성 측정; 장축 길이 값 추출
-stats = regionprops('table',bw,'MajorAxisLength');
-longAxis = max(stats.MajorAxisLength);
-```
-+ 장축 길이에 따라 드론 이동 거리 계산            
++ 회귀 분석을 통해 장축 길이에 따른 드론 이동 거리 관계식 도출
 1. 1단계
 ```MATLAB
 if sum(bw,'all') <= 10000
@@ -236,7 +200,7 @@ elseif longAxis > 860
     
 else
     distance = (7E-06)*(longAxis)^2 - 0.0102*longAxis + 4.5856; % 드론과 링 사이의 거리
-    moveforward(drone, 'Distance', distance + 0.5, 'Speed', 1); % 링과 표식 사이 거리의 절반만큼 추가 이동
+    moveforward(drone, 'Distance', distance + 0.8, 'Speed', 1); % 링과 표식 사이 거리의 절반만큼 추가 이동
     pause(1);
     distance
 end
@@ -251,7 +215,7 @@ elseif longAxis > 460
     
 else
     distance = (1E-05)*(longAxis)^2 - 0.0124*longAxis + 4.5996; % 드론과 링 사이의 거리
-    moveforward(drone, 'Distance', distance - 1, 'Speed', 1);   % 링과 표식 사이 거리의 절반만큼 추가 이동
+    moveforward(drone, 'Distance', distance - 0.8, 'Speed', 1);   % 링과 표식 사이 거리의 절반만큼 추가 이동
     distance
     
 end
@@ -260,13 +224,13 @@ end
 1. 1단계
 ```MATLAB
 turn(drone, deg2rad(90));   % 1단계 통과 후 90도 회전
-moveback(drone,'Distance',0.5,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동   
+moveback(drone,'Distance',1,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동   
 count = 0;
 ```
 2. 2단계
 ```MATLAB
 turn(drone, deg2rad(90));   % 2단계 통과 후 90도 회전
-moveback(drone,'Distance',0.5,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동
+moveback(drone,'Distance',1,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동
 count = 0;
 ```
 3. 3단계
@@ -282,12 +246,11 @@ land(drone);
 + 30°부터 5°씩 회전시키며 최적의 각도 계산
 ```MATLAB
 % 5도씩 회전하며 탐색
-sum = 0;
+maxsum = 0;
 
 for level = 1:7
     if level > 1
         turn(drone, deg2rad(5));
-        pause(0.5); % 안정성을 위해 pause 추가
     end
 
     frame = snapshot(cam);
@@ -297,8 +260,8 @@ for level = 1:7
     blueNemo = detect_r & detect_g & detect_b;
     sumblueNemo = sum(sum(blueNemo));
 
-    if sumblueNemo > sum
-        sum = sumblueNemo;
+    if sumblueNemo > maxsum
+        maxsum = sumblueNemo;
         maxlevel = level;
     end
 end
