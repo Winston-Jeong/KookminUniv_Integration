@@ -28,7 +28,7 @@
 
 >  **사각형**을 검출하여 중심 좌표를 얻도록 한다.
 
-<img src="image/파란색 사각형.png" width="44%" height="33%">   
+<img src="image/blueNemo.png" width="44%" height="33%">   
 
 * 링 통과하기
 
@@ -40,7 +40,7 @@
 
 > **원**을 검출하여 장축의 길이로부터 드론의 이동 거리를 얻도록 한다.
 
-<img src="image/파란색 원.png" width="44%" height="33%">                
+<img src="image/blueO.png" width="44%" height="33%">                
 
 * 링 통과 후 드론 제어
   * 드론이 링을 통과하면 바로 단계에 맞게 명령 코드[^2]를 입력하여 제어
@@ -104,7 +104,7 @@ dis = centroid - center_point;  % 사각형 중점과 center_point 차이
 if(abs(dis(1))<=35 && abs(dis(2))<=35)    % x 좌표 차이, y 좌표 차이가 35보다 작을 경우 center point 인식
     disp("Find Center Point!"); 
     count = 1;
-   
+
 % case 2
 elseif(dis(2)<=0 && abs(dis(2))<=35 && abs(dis(1))>35)
     if(dis(1)<=0)
@@ -174,9 +174,33 @@ elseif(dis(2)>0 && abs(dis(2))>35)
     end
 end
 ```
+**링 통과하기**
++ 파란색 HSV 설정 및 원 검출
+```MATLAB
+hsv = rgb2hsv(frame);
+h = hsv(:,:,1);
+s = hsv(:,:,2);
+v = hsv(:,:,3);
+blue = (0.535<h)&(h<0.69)&(0.4<s)&(v>0.1)&(v<0.97);
+
+blue(1,:) = 1;
+blue(720,:) = 1;
+bw = imfill(blue,'holes');
+for x=1:720
+    for y=1:size(blue,2)
+        if blue(x,y)==bw(x,y)
+            bw(x,y)=0;
+        end
+    end
+end
+
+% 속성 측정; 장축 길이 값 추출
+stats = regionprops('table',bw,'MajorAxisLength');
+longAxis = max(stats.MajorAxisLength);
+```
 + 회귀 분석을 통해 장축 길이에 따른 드론 이동 거리 관계식 도출
 <p align="center">
-    <img src="image/회귀분석1,2.png" width="44%" height="33%">
+    <img src="image/reGressionAnalysis_1,2.png" width="44%" height="33%">
 </p>                     
 
 ```MATLAB
@@ -199,17 +223,16 @@ if sum(bw,'all') <= 10000
     moveforward(drone, 'Distance', 2.2, 'Speed', 1);
     
 elseif longAxis > 860
-    moveforward(drone, 'Distance', 2.2, 'Speed', 1); %1.2m+1m
+    moveforward(drone, 'Distance', 2.2, 'Speed', 1);    % 1.2m+1m
     
 else
     distance = (3E-06)*(longAxis)^2 - 0.0065*longAxis + 4.3399; % 드론과 링 사이의 거리
     moveforward(drone, 'Distance', distance + 1, 'Speed', 1);   % 링과 표식 사이 거리의 절반만큼 추가 이동
-    pause(1);
     distance
 end
 ```
 <p align="center">
-    <img src="image/회귀분석3.png" width="44%" height="33%">
+    <img src="image/reGressionAnalysis_3.png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
@@ -218,17 +241,16 @@ if sum(bw,'all') <= 10000
     moveforward(drone, 'Distance', 1.7, 'Speed', 1);
     
 elseif longAxis > 860
-    moveforward(drone, 'Distance', 1.7, 'Speed', 1); %1.2m+0.5m
+    moveforward(drone, 'Distance', 1.7, 'Speed', 1);    % 1.2m+0.5m
     
 else
     distance = (7E-06)*(longAxis)^2 - 0.0102*longAxis + 4.5856; % 드론과 링 사이의 거리
     moveforward(drone, 'Distance', distance + 0.8, 'Speed', 1); % 링과 표식 사이 거리의 절반만큼 추가 이동
-    pause(1);
     distance
 end
 ```
 <p align="center">
-    <img src="image/회귀분석4(초기).png" width="44%" height="33%">
+    <img src="image/reGressionAnalysis_4.png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
@@ -262,7 +284,7 @@ count = 0;
 ```MATLAB
 % 3단계
 turn(drone, deg2rad(30));   % 3단계 통과 후 30도 회전
-count=0;
+count = 0;
 ```
 ```MATLAB
 % 4단계
@@ -304,7 +326,6 @@ turn(drone, deg2rad(angle));
 </p>
 
 ***
-
 [^1]: 원이 아닌 사각형 중심 좌표를 계산한다. 왜? 2단계 링과 3단계 링의 거리가 가까울 때 2단계에서 원을 추출하려 하면 3단계 원까지 함께 인식되는 문제점이 발생한다. 이를 해결하고자 원이 아닌 파란색 사각형을 추출하는 방식을 이용한다.
 
 [^2]: 빨간색, 초록색, 보라색 표식을 보고 이를 인식하여 드론 제어를 하는 것이 아닌, 드론이 링을 통과하면 바로 단계에 맞게 명령 코드를 입력하여 제어하는 방식을 이용한다. 이는 실측 시간을 감소시키기 위함이다.
