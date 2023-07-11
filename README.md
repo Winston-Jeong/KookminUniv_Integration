@@ -220,7 +220,7 @@ else
 end
 ```
 <p align="center">
-    <img src="https://github.com/hyobbbin/mini-drone/assets/130888836/a63a1c1b-0c00-4358-b6b1-9bc30630e988" width="44%" height="33%">
+    <img src="image/회귀분석4(초기).png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
