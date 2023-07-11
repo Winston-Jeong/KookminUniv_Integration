@@ -28,7 +28,7 @@
 
 >  **사각형**을 검출하여 중심 좌표를 얻도록 한다.
 
-<img src="image/blueNemo.png" width="44%" height="33%">   
+<img src="image/파란색 사각형.png" width="44%" height="33%">   
 
 * 링 통과하기
 
@@ -40,7 +40,7 @@
 
 > **원**을 검출하여 장축의 길이로부터 드론의 이동 거리를 얻도록 한다.
 
-<img src="image/blueO.png" width="44%" height="33%">                
+<img src="image/파란색 원.png" width="44%" height="33%">                
 
 * 링 통과 후 드론 제어
   * 드론이 링을 통과하면 바로 단계에 맞게 명령 코드[^2]를 입력하여 제어
@@ -176,7 +176,7 @@ end
 ```
 + 회귀 분석을 통해 장축 길이에 따른 드론 이동 거리 관계식 도출
 <p align="center">
-    <img src="image/reGressionAnalysis_1,2.png" width="44%" height="33%">
+    <img src="image/회귀분석1,2.png" width="44%" height="33%">
 </p>                     
 
 ```MATLAB
@@ -209,7 +209,7 @@ else
 end
 ```
 <p align="center">
-    <img src="image/reGressionAnalysis_3.png" width="44%" height="33%">
+    <img src="image/회귀분석3.png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
@@ -228,7 +228,7 @@ else
 end
 ```
 <p align="center">
-    <img src="image/reGressionAnalysis_4.png" width="44%" height="33%">
+    <img src="image/회귀분석4(초기).png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
