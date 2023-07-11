@@ -25,9 +25,10 @@
     * regionprops 함수로 파란색 사각형[^1] 중심 좌표 계산
     * center_point와 파란색 사각형 중심 좌표 상하좌우 차이를 이용하여 드론 위치 조절
     * 오차 범위 내에 드론 위치하면 중점으로 인식    
-<p align="center">
-    <img src="image/파란색 사각형.png" width="44%" height="33%">
-</p>                      
+
+>  **사각형**을 검출하여 중심 좌표를 얻도록 한다.
+
+<img src="image/blueNemo.png" width="44%" height="33%">   
 
 * 링 통과하기
 
@@ -36,9 +37,10 @@
   * 장축 길이에 따른 드론과 링 사이 거리 값 추출
   * 추출한 값들로 회귀 분석을 통해 드론 이동 거리 식 도출
   * 드론 이동시켜 링 통과
-<p align="center">
-    <img src="image/파란색 원.png" width="44%" height="33%">
-</p>                   
+
+> **원**을 검출하여 장축의 길이로부터 드론의 이동 거리를 얻도록 한다.
+
+<img src="image/blueO.png" width="44%" height="33%">                
 
 * 링 통과 후 드론 제어
   * 드론이 링을 통과하면 바로 단계에 맞게 명령 코드[^2]를 입력하여 제어
@@ -89,6 +91,12 @@ for j = 1:length(areaNemo)
 end
 ```
 + center point와 사각형 중심 좌표와 차이를 이용해 드론 위치 조절
+<p align="center">
+    <img src="image/case.png" width="80%" height="60%">
+</p>         
+
+> 드론이 천을 바라보았을 때의 경우를 크게 상하좌우 4가지로 나누었다. 그 후 세부적으로 경우의 수를 따져 아래와 같이 여러 case에 따라 드론 위치를 조절하는 코드를 작성했다.       
+
 ```MATLAB
 dis = centroid - center_point;  % 사각형 중점과 center_point 차이
 
@@ -168,8 +176,8 @@ end
 ```
 + 회귀 분석을 통해 장축 길이에 따른 드론 이동 거리 관계식 도출
 <p align="center">
-    <img src="image/회귀분석1,2.png" width="44%" height="33%">
-</p>       
+    <img src="image/reGressionAnalysis_1,2.png" width="44%" height="33%">
+</p>                     
 
 ```MATLAB
 % 1단계
@@ -201,7 +209,7 @@ else
 end
 ```
 <p align="center">
-    <img src="image/회귀분석3.png" width="44%" height="33%">
+    <img src="image/reGressionAnalysis_3.png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
@@ -220,7 +228,7 @@ else
 end
 ```
 <p align="center">
-    <img src="image/회귀분석4(초기).png" width="44%" height="33%">
+    <img src="image/reGressionAnalysis_4.png" width="44%" height="33%">
 </p>           
 
 ```MATLAB
