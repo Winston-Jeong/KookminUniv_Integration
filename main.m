@@ -6,7 +6,7 @@ drone = ryze();
 cam = camera(drone);
 takeoff(drone);
 
-moveback(drone,'Distance',0.8,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동
+moveback(drone,'Distance',1,'Speed',1);   % 사각형 전체 한 번에 인식하기 위해 뒤로 이동
   
 % 1st stage
 while 1
