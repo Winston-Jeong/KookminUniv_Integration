@@ -1,3 +1,10 @@
+%국민대통합
+
+
+
+
+
+
 count = 0;                              % 전진 여부 확인 변수
 center_point = [480,240];               % 사각형 중심점이 center_point와 일치해야 통과
 centroid = zeros(size(center_point));   % 사각형 중심점
