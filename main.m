@@ -443,7 +443,7 @@ while 1
             
         else
             distance = (7E-06)*(longAxis)^2 - 0.0102*longAxis + 4.5856; % 드론과 링 사이의 거리
-            moveforward(drone, 'Distance', distance + 0.8, 'Speed', 1); % 링과 표식 사이 거리의 절반만큼 추가 이동
+            moveforward(drone, 'Distance', distance + 0.5, 'Speed', 1); % 링과 표식 사이 거리의 절반만큼 추가 이동
             distance
         end
 
@@ -625,7 +625,6 @@ while 1
         break;
     end
 end
-moveright(drone,'Distance',0.2,'Speed',0.5);
 disp('4th Stage Finish');
 disp('Mission Complete!');
 land(drone);
